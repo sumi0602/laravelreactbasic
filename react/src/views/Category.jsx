@@ -5,15 +5,15 @@ import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/contextprovider";
 import Swal from 'sweetalert2'
 
-export default function Users() {
+export default function Category() {
 
-    const [users, setUsers] = useState([]);
+    const [categorys, setCategory] = useState([]);
     const [loading, setLoading] = useState(false)
     useEffect(() => {
-        getUsers();
+        getCategory();
     }, [])
 
-    const onDelete = (u) => {
+    const onDelete = (cat) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to delete",
@@ -24,21 +24,21 @@ export default function Users() {
             confirmButtonText: "Yes, Delete!"
         }).then((result) => {
             if (result.isConfirmed) {
-                axiosClient.delete(`/users/${u.id}`)
+                axiosClient.delete(`/category/${cat.id}`)
                     .then(() => {
-                        Swal.fire("Delete", "User was successfully deleted");
-                        getUsers();
+                        Swal.fire("Delete", "Category was successfully deleted");
+                        getCategory();
                     })
             }
         })
     }
 
-    const getUsers = () => {
+    const getCategory = () => {
         setLoading(true)
-        axiosClient.get('/users')
+        axiosClient.get('/category')
             .then(({ data }) => {
                 console.log(data);
-                setUsers(data.data)
+                setCategory(data.data)
             })
             .catch(() => {
                 setLoading(false)
@@ -47,32 +47,30 @@ export default function Users() {
 
     return (
         <div>
-            <h3>Users</h3>
+            <h3>Category</h3>
             <br />
             <div class="d-flex">
-                <Link to="/users/new" className="btn btn-primary">Add new</Link>
+                <Link to="/category/new" className="btn btn-primary">Add new</Link>
             </div>
             <div class="d-flex">
 
                 <div class="container">
                     <table class="table table-striped responsive">
                         <thead>
-                            <th>ID</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th>Create Date</th>
+                            <th>Description</th>
+                            <th>Photo</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
-                            {users.map(u => (
+                            {categorys.map(category => (
                                 <tr>
-                                    <td>{u.id}</td>
-                                    <td>{u.name}</td>
-                                    <td>{u.email}</td>
-                                    <td>{u.created_at}</td>
+                                    <td>{category.name}</td>
+                                    <td>{category.description}</td>
+                                    <td> <img alt='img_preview' width="100" height="50" src={category.photo} className={'img-thumbnail'}/></td>
                                     <td>
-                                        <Link className="btn btn-danger" to={'/users/' + u.id}>Edit</Link>&nbsp;&nbsp;
-                                        <button onClick={ev => onDelete(u)} className="btn btn-primary">Delete</button>
+                                        <Link className="btn btn-danger" to={'/category/' + category.id}>Edit</Link>&nbsp;&nbsp;
+                                        <button onClick={ev => onDelete(category)} className="btn btn-primary">Delete</button>
                                     </td>
                                 </tr>
                             ))

@@ -18,23 +18,23 @@ export default function Login() {
             email: emailRef.current.value,
             password: passwordRef.current.value
         }
-       setErrors(null)
-       axiosClient.get('http://127.0.0.1:8000/sanctum/csrf-cookie',{
-        withCredentials:true,
-       });
+        setErrors(null)
+        axiosClient.get('http://127.0.0.1:8000/sanctum/csrf-cookie', {
+            withCredentials: true,
+        });
         axiosClient.post('/login', payload).then(({ data }) => {
             setUser(data.user)
             setToken(data.token)
         }).catch(err => {
             const response = err.response;
-        
+
             if (response && response.status === 422) {
                 if (response.data.errors) {
                     setErrors(response.data.errors)
                 } else {
                     setErrors({
-                        email:[response.data.message]
-                })
+                        email: [response.data.message]
+                    })
                 }
 
             }
@@ -44,7 +44,6 @@ export default function Login() {
 
     return (
         <>
-
             <div id="login">
                 <div className="container">
                     <div id="login-row" className="row justify-content-center align-items-center">

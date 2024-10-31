@@ -19,8 +19,8 @@ export default function Signup() {
             email: emailRef.current.value,
             password: passwordRef.current.value
         }
-       
-        axiosClient.post('/signup', payload).then(({data}) => {
+
+        axiosClient.post('/signup', payload).then(({ data }) => {
             setUser(data.user)
             setToken(data.token)
         }).catch(err => {
